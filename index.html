@@ -300,14 +300,17 @@ config
 
 ##################### VERIFICAR INFORMAÇÕES #####################
 
+ONUS DESPROVISIONADAS
+show interface gpon discovered-onus
 
-show interface gpon discovered-onus	ONUS DESPROVISIONADAS
+CONSULTAR ONU
+show interface gpon onu | include ${serial}
 
-show interface gpon onu | include ${serial}	CONSULTAR ONU
+CONSULTAR SERVICE PORT
+show service-port gpon 1/${slot}
 
-show service-port gpon 1/${slot}	CONSULTAR SERVICE PORT 
-
-show interface gpon 1/${slot} onu ${onu}	LISTAR ONUS
+LISTAR ONUS
+show interface gpon 1/${slot} onu ${onu}
 
 
 `,
@@ -398,41 +401,41 @@ configure voice ont voice-port 1/1/${slot}/${onu}/2/1 admin-state unlocked
 Calix: 
 show ont serial-number ${serial}
 
-Verificar ont não provisionada:
-show ont unassigned
- 
 Verificar ONT pelo FSAN:
 show ont serial-number (CXNK) ${serial}
 
-Verificar ONTs pela posição:
-show ont discovered on-gpon-port ${slot}
- 
-Verificar detalhes de todas as ONTs:
-show ont discovered detail
- 
+Verificar ont não provisionada:
+show ont unassigned
+
 Verificar detalhes de ONT específica:
 show ont 59${slot1Formatado}${slot2Formatado}${onuFormatado} detail
- 
+
 Verificar VLAN de ONT:
 show ont 59${slot1Formatado}${slot2Formatado}${onuFormatado} vlans
+
+Verificar IP em uma ONT especifica:
+show dhcp leases ont-port 59${slot1Formatado}${slot2Formatado}${onuFormatado}/G1 detail
+
+Verificar detalhes de todas as ONTs:
+show ont discovered detail
+		
+VERIFICAR ONTs NA PON:
+show ont on-gpon-port ${slot}
+
+Verificar ONTs pela posição:
+show ont discovered on-gpon-port ${slot}
  
 Verificar posição de ONT ID:
 show ont 59${slot1Formatado}${slot2Formatado}${onuFormatado} ont-pon-us-cos
  
 Verificar IP:
 show dhcp leases
- 
-Verificar IP em uma ONT especifica:
-show dhcp leases ont-port 59${slot1Formatado}${slot2Formatado}${onuFormatado}/G1 detail
- 
-VERIFICAR ONTs NA PON:
-show ont on-gpon-port ${slot}
- 
-Habilitar Gerência:
-set ont-port 59${slot1Formatado}${slot2Formatado}${onuFormatado}/G1 remote-access-time 1440
- 
+
 VERIFICAR TODAS AS INFORMAÇÕES DAS ONTs NA PON:
 show ont on-gpon-port ${slot} detail
+
+Habilitar Gerência:
+set ont-port 59${slot1Formatado}${slot2Formatado}${onuFormatado}/G1 remote-access-time 1440
  
 VERIFICAR PORTÊNCIAS NAS ONTs DA PON:
 show ont on-gpon-port "${slot}" real-time-data
