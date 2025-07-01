@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>COMANDOS</title>
+    <link rel="icon" type="image" href="favicon.ico">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="sidebar">
+        <div class="inputs">
+            <h3>COMANDOS</h3>
+            <input type="number" id="slot1" placeholder="Slot (ex: 1)">
+            <input type="number" id="slot2" placeholder="PON (ex: 7)">
+            <input type="number" id="onu" placeholder="ONU (ex: 55)">
+            <input type="text" id="serial" placeholder="Serial (ex: DACMECEC5C2EE)">
+            <input type="number" id="numero" placeholder="Telefone (ex: 558420204039)">
+            <input type="number" id="pin" placeholder="Pin (ex: 54162567060630007552)">
+            <input type="text" id="desc" placeholder="Modelo (FGA2210)">
+        </div>
+        <div class="sidebar-buttons">
+            <button onclick="mostrarInfo(1)">DATACOM</button>
+            <button onclick="mostrarInfo(2)">NOKIA</button>
+            <button onclick="mostrarInfo(3)">CALIX</button>
+            <button onclick="mostrarInfo(4)">ZHONE</button>
+            <button onclick="mostrarInfo(5)">HUAWEI</button>
+            <button onclick="mostrarInfo(0)">CHAMADO GSOP</button>
+        </div>
+    </div>
+
+    <div class="content">
+        <div class="content-header" id="barraSuperior" style="display: none;">
+            <input type="text" id="vlan" placeholder="VLAN">
+            <input type="text" id="service_port" placeholder="Service Port">
+        </div>
+        <textarea id="infoText">Clique em um botão para ver as informações.
+As velocidades estão setadas por padrão em 1000Mbps (1Gb), caso seja necessário ajustar, realizar a alteração manualmente no corpo do script
+        </textarea>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
