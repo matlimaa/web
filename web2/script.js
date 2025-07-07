@@ -14,7 +14,7 @@ function mostrarInfo(opcao) {
     let numero = document.getElementById("numero").value || "558420204039";
     let pin = document.getElementById("pin").value || "541625533630007552";
     let desc = document.getElementById("desc").value || "FGA2210";
-    let service_port = document.getElementById("service_port").value || "**Service port**";
+    let service_port = document.getElementById("service_port").value || "Service port/Contrato";
     let vlan = document.getElementById("vlan").value || "**VLAN**";
 
     let slot = `${slot1}/${slot2}`;
@@ -36,7 +36,7 @@ function mostrarInfo(opcao) {
     document.getElementById("infoText").value = info;
 
     const barra = document.getElementById("barraSuperior");
-    barra.style.display = (opcao === 1 || opcao === 5) ? "flex" : "none";
+    barra.style.display = (opcao === 'datacom' || opcao === 'huawei' || opcao === 'nokiaB'  ) ? "flex" : "none";
 
     let buttons = document.querySelectorAll(".sidebar button");
     buttons.forEach(button => button.classList.remove("active"));
@@ -61,12 +61,27 @@ function gerarTexto(opcao, slot, onu, serial, slot1, slot2, service_port, vlan, 
     const textos = {
 
         // Adicione os blocos de comando aqui conforme opção
-             1: ` #################### PROVISIONAR DATACOM #####################
+
+             datacom: `##################### COMANDOS DATACOM #####################
+
+ONUS DESPROVISIONADAS
+show interface gpon discovered-onus
+
+CONSULTAR ONU
+show interface gpon onu | include ${serial}
+
+CONSULTAR SERVICE PORT 
+show service-port gpon 1/${slot}
+
+LISTAR ONUS
+show interface gpon 1/${slot} onu ${onu}
+
+#################### PROVISIONAR DATACOM #####################
     
 config terminal
 interface gpon 1/${slot}  
 onu ${onu}
-name 3663018
+name ${service_port}
 serial-number ${serial}
 line-profile ${vlan}_1000_b
 ethernet 1
@@ -79,7 +94,7 @@ exit
 
 service-port new
 
-gpon 1/${slot} onu ${onu} gem 2 description 3663018 match vlan vlan-id ${vlan} action vlan replace vlan-id ${vlan}
+gpon 1/${slot} onu ${onu} gem 2 description ${service_port} match vlan vlan-id ${vlan} action vlan replace vlan-id ${vlan}
 commit
  
 ##################### DESPROVISIONAR #####################
@@ -94,21 +109,30 @@ config
     exit
 
 
-##################### VERIFICAR INFORMAÇÕES #####################
-
-
-show interface gpon discovered-onus	ONUS DESPROVISIONADAS
-
-show interface gpon onu | include ${serial}	CONSULTAR ONU
-
-show service-port gpon 1/${slot}	CONSULTAR SERVICE PORT 
-
-show interface gpon 1/${slot} onu ${onu}	LISTAR ONUS
-
-
 `,
 
-          2: `####################### PROVISIONAR NOKIA #######################
+          nokiaR: `####################### COMANDOS NOKIA (R) #######################
+
+
+show equipment ont index sn:${serial}
+
+show equipment ont status pon 1/1/${slot}
+
+show equipment ont optics 1/1/${slot}/${onu}
+
+show vlan bridge-port-fdb 1/1/${slot}/${onu}/${equip}/1
+
+show dhcp-relay session vlanport:1/1/${slot}/${onu}/${equip}/1:301
+show dhcp-relay session vlanport:1/1/${slot}/${onu}/${equip}/1:299
+show dhcp-relay session vlanport:1/1/${slot}/${onu}/${equip}/1:298
+show dhcp-relay session vlanport:1/1/${slot}/${onu}/vuni:298
+
+show equipment ont status pon 1/1/${slot} ont 1/1/${slot}/${onu}
+
+
+####################### PROVISIONAR NOKIA #######################
+
+Comando para provisionamento Zyxel*
 
 configure equipment ont interface 1/1/${slot}/${onu} sernum ${serial} subslocid WILDCARD fec-up disable sw-dnload-version disabled sw-ver-pland disabled voip-allowed iphost iphc-allowed enable
 
@@ -132,22 +156,6 @@ configure interface port uni:1/1/${slot}/${onu}/${equip}/1 admin-up
 
 configure equipment ont interface 1/1/${slot}/${onu} admin-state down
 configure equipment ont no interface 1/1/${slot}/${onu}
-
-
-####################### CONSULTA #######################
-
-
-show equipment ont optics 1/1/${slot}/${onu}
-
-
-show vlan bridge-port-fdb 1/1/${slot}/${onu}/${equip}/1
-
-show dhcp-relay session vlanport:1/1/${slot}/${onu}/${equip}/1:301
-show dhcp-relay session vlanport:1/1/${slot}/${onu}/${equip}/1:299
-show dhcp-relay session vlanport:1/1/${slot}/${onu}/${equip}/1:298
-show dhcp-relay session vlanport:1/1/${slot}/${onu}/vuni:298
-
-show equipment ont status pon 1/1/${slot} ont 1/1/${slot}/${onu}
 
 
 ####################### ATIVAÇÃO TV #######################
@@ -186,23 +194,62 @@ configure voice ont voice-port 1/1/${slot}/${onu}/2/1 admin-state unlocked
 
 
 `,
-                3: `####################### COMANDOS CALIX #######################
+
+  nokiaB: `####################### COMANDOS NOKIA (B) #######################
+
+show equipment ont index sn:${serial}
+
+show equipment ont status pon 1/1/${slot}
+
+show equipment ont optics 1/1/${slot}/${onu}
+
+show vlan bridge-port-fdb 1/1/${slot}/${onu}/${equip}/1
+
+show dhcp-relay session vlanport:1/1/${slot}/${onu}/${equip}/1:301
+
+show equipment ont status pon 1/1/${slot} ont 1/1/${slot}/${onu}
 
 
-Calix: 
-show ont serial-number ${serial}
+
+#################### PROVISIONAR #####################
+
+configure equipment ont interface 1/1/${slot}/${onu} sernum ZTEG:D872FE4D sw-ver-pland disabled optics-hist enable
+admin-state up
+exit all
+
+configure equipment ont slot 1/1/${slot}/${onu}/1 planned-card-type ethernet plndnumdataports 1 plndnumvoiceports 0 admin-state up
+exit all
+
+configure qos interface 1/1/${slot}/${onu}/1/1 upstream-queue 0 bandwidth-profile name:HSI_1G_UP
+exit all
+
+configure interface port uni:1/1/${slot}/${onu}/1/1 admin-up
+exit all
+
+configure bridge port 1/1/${slot}/${onu}/1/1 max-unicast-mac 32 max-committed-mac 1
+vlan-id ${vlan}
+exit
+pvid ${vlan}
+exit all
+
+
+####################### DESPROVISIONAMENTO #######################
+
+configure equipment ont interface 1/1/${slot}/${onu} admin-state down
+configure equipment ont no interface 1/1/${slot}/${onu}
+
+`,
+
+                calix: `####################### COMANDOS CALIX #######################
 
 Verificar ont não provisionada:
 show ont unassigned
  
 Verificar ONT pelo FSAN:
-show ont serial-number (CXNK) ${serial}
+show ont serial-number ${serial}
 
 Verificar ONTs pela posição:
 show ont discovered on-gpon-port ${slot}
- 
-Verificar detalhes de todas as ONTs:
-show ont discovered detail
  
 Verificar detalhes de ONT específica:
 show ont 59${slot1Formatado}${slot2Formatado}${onuFormatado} detail
@@ -213,30 +260,17 @@ show ont 59${slot1Formatado}${slot2Formatado}${onuFormatado} vlans
 Verificar posição de ONT ID:
 show ont 59${slot1Formatado}${slot2Formatado}${onuFormatado} ont-pon-us-cos
  
-Verificar IP:
-show dhcp leases
- 
 Verificar IP em uma ONT especifica:
 show dhcp leases ont-port 59${slot1Formatado}${slot2Formatado}${onuFormatado}/G1 detail
  
 VERIFICAR ONTs NA PON:
 show ont on-gpon-port ${slot}
- 
-Habilitar Gerência:
-set ont-port 59${slot1Formatado}${slot2Formatado}${onuFormatado}/G1 remote-access-time 1440
- 
-VERIFICAR TODAS AS INFORMAÇÕES DAS ONTs NA PON:
-show ont on-gpon-port ${slot} detail
- 
-VERIFICAR PORTÊNCIAS NAS ONTs DA PON:
-show ont on-gpon-port "${slot}" real-time-data
- 
+
 Reiniciar ONT:
 reset ont 59${slot1Formatado}${slot2Formatado}${onuFormatado}
- 
-Habilitar acesso remoto:
-set ont-port 59${slot1Formatado}${slot2Formatado}${onuFormatado}/G1 remote-access-time 1440
 
+Desabilitar alarmes:
+set session tca-notif disabled alarm-notif disabled event-notif disabled pager disabled timeout disabled
 
 ####################### DESPROVISIONAR #######################
 
@@ -245,23 +279,35 @@ delete ont 59${slot1Formatado}${slot2Formatado}${onuFormatado} forced
 
 ####################### PROVISIONAMENTO #######################
 
+Comando alterativo para provisionamento*
+
+create ont 59${slot1Formatado}${slot2Formatado}${onuFormatado} profile 813G serial-number ${serial} admin-state enabled
+
+---------------
+
 create ont 59${slot1Formatado}${slot2Formatado}${onuFormatado} profile 844G-L3 serial-number ${serial} admin-state enabled
+
+
 set ont-port 59${slot1Formatado}${slot2Formatado}${onuFormatado}/G1 mgmt-mode external instance rg-3
 set ont-port 59${slot1Formatado}${slot2Formatado}${onuFormatado}/G1 rg-mgmt-profile Rg-Mgmt-Prof-1
 add eth-svc Data1 to-ont-port 59${slot1Formatado}${slot2Formatado}${onuFormatado}/G1 bw-profile 1000991000 svc-tag-action TA-V-301-L3 admin-state enabled
 set ont-port 59${slot1Formatado}${slot2Formatado}${onuFormatado}/G1 eth-svc Data1 bw-profile 1000991000
 remove ont-port 59${slot1Formatado}${slot2Formatado}${onuFormatado}/g2 from-res-gw
+
+
+####################### ATIVAÇÃO TELEFONIA #####################
+
 add eth-svc Data3 to-ont-port 59${slot1Formatado}${slot2Formatado}${onuFormatado}/g2 bw-profile PHONE-E1 svc-tag-action TA-V-298-L2 admin-state enabled
 
 
-####################### COMANDO MULTICAST #######################
+####################### ATIVAÇÃO TV  #######################
 
 add eth-svc Data2 to-ont-port 59${slot1Formatado}${slot2Formatado}${onuFormatado}/G1 bw-profile IPTV svc-tag-action TA-V-299 mcast-profile IPTV-MCast-Prof-1 admin-state enabled
 
 
 
 `,
-                4: `####################### COMANDOS ZHONE #######################
+                zhone: `####################### COMANDOS ZHONE #######################
 
 Listar card/pon
 onu status ${slot}
@@ -315,30 +361,33 @@ Are you sure? [yes] or [no]:   yes
 
 `,
 
-                5: ` ####################### DESPROVISIONAR HUAWEI #######################
+                huawei: `####################### COMANDOS HUAWEI #######################
 
-display ont autofind all		consultar ONU desprovisionadas
+Consultar service prot
+display service-port port 0/${slot} ont ${onu}
 
+consultar ONU desprovisionadas
+display ont autofind all		
+
+consultar onde a equipamento está provisionamento
+display ont info by-sn ${serial}	
+
+
+
+####################### DESPROVISIONAR HUAWEI #######################
 
 enable  
 
-
 config 
 
-
-display ont info by-sn ${serial}	consultar onde a equipamento está provisionamento
-
-
-undo service-port port 0/${slot} ont ${onu} 
-
+undo service-port port 0/${slot} ont ${onu}
 
 interface gpon 0/${slot1}
 
-
 ont delete ${slot2} ${onu}
 
-
 quit
+
 --------------------------------------------------------------------------
 
 	display ont info by-sn 485754434C098DAA 								
@@ -348,11 +397,6 @@ quit
 --------------------------------------------------------------------------
 
 ####################### PROVISIONAMENTO #######################
---------------------------------------------------
-pegar service-port
-
-display service-port next-free-index
---------------------------------------------------
 
 enable
 
