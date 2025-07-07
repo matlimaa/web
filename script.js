@@ -113,10 +113,11 @@ config
 
           nokiaR: `####################### COMANDOS NOKIA (R) #######################
 
-
 show equipment ont index sn:${serial}
 
 show equipment ont status pon 1/1/${slot}
+
+--------------------
 
 show equipment ont optics 1/1/${slot}/${onu}
 
