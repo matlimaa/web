@@ -130,6 +130,13 @@ show dhcp-relay session vlanport:1/1/${slot}/${onu}/vuni:298
 
 show equipment ont status pon 1/1/${slot} ont 1/1/${slot}/${onu}
 
+--------------------
+Comandos telefonia
+
+show dhcp-relay session vlanport:1/1/${slot}/${onu}/vuni:298
+info configure voice ont voice-sip-port 1/1/${slot}/${onu}/6/1
+show voice ont pots operational-data 1/1/${slot}/${onu}/6/1
+
 
 ####################### PROVISIONAR NOKIA #######################
 
