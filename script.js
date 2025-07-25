@@ -125,8 +125,6 @@ show vlan bridge-port-fdb 1/1/${slot}/${onu}/${equip}/1
 
 show dhcp-relay session vlanport:1/1/${slot}/${onu}/${equip}/1:301
 show dhcp-relay session vlanport:1/1/${slot}/${onu}/${equip}/1:299
-show dhcp-relay session vlanport:1/1/${slot}/${onu}/${equip}/1:298
-show dhcp-relay session vlanport:1/1/${slot}/${onu}/vuni:298
 
 show equipment ont status pon 1/1/${slot} ont 1/1/${slot}/${onu}
 
