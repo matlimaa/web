@@ -214,7 +214,7 @@ show equipment ont status pon 1/1/${slot} ont 1/1/${slot}/${onu}
 
 #################### PROVISIONAR #####################
 
-configure equipment ont interface 1/1/${slot}/${onu} sernum ZTEG:D872FE4D sw-ver-pland disabled optics-hist enable
+configure equipment ont interface 1/1/${slot}/${onu} sernum ${serial} sw-ver-pland disabled optics-hist enable
 admin-state up
 exit all
 
