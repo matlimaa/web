@@ -418,7 +418,7 @@ quit
 service-port ${service_port} vlan ${vlan} gpon 0/${slot1}/${slot2} ont ${onu} gemport ${vlan} multi-service user-vlan ${vlan} tag-transform translate
 
 --------------------------------
-Cortex
+Cortez
 
 enable
 config
@@ -472,4 +472,5 @@ Sem evento massivo
 
     return textos[opcao] || "Selecione uma opção.";
 }
+
 
