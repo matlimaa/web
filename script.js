@@ -417,6 +417,18 @@ quit
  
 service-port ${service_port} vlan ${vlan} gpon 0/${slot1}/${slot2} ont ${onu} gemport ${vlan} multi-service user-vlan ${vlan} tag-transform translate
 
+--------------------------------
+Cortex
+
+enable
+config
+interface gpon 0/${slot1}
+ont add ${slot2} ${onu} sn-auth ${serial} omci ont-lineprofile-id 1000 ont-srvprofile-id 1000 desc ${serial}
+ont port native-vlan ${slot2} ${onu} eth 1 vlan 10 priority 0
+quit
+service-port vlan 10 gpon 0/${slot1}/${slot2} ont ${onu} gemport 301 multi-service user-vlan 10 inbound traffic-table index 100 outbound traffic-table index 100
+quit
+
 
 `,
 
@@ -460,3 +472,4 @@ Sem evento massivo
 
     return textos[opcao] || "Selecione uma opção.";
 }
+
