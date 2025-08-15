@@ -31,10 +31,17 @@
       </div>
       <button onclick="mostrarInfo('calix')">CALIX</button>
       <button onclick="mostrarInfo('zhone')">ZHONE</button>
-      <button onclick="mostrarInfo('huawei')">HUAWEI</button>
+      <div style="display: flex; gap: 10px;">
+        <button onclick="mostrarInfo('huawei')">HUAWEI</button>
+        <button onclick="mostrarInfo('huaweiB')">HUAWEI IPoE (TESTE)</button>
+      </div>
+      
+      <button onclick="mostrarInfo('zte')">ZTE (TESTE)</button>
       <button onclick="mostrarInfo(0)">CHAMADO GSOP</button>
     </div>
     </div>
+
+	
 
 
 
@@ -44,9 +51,16 @@
             <input type="text" id="vlan" placeholder="VLAN">
             <input type="text" id="service_port" placeholder="Service port/Contrato">
         </div>
+
+
+
+
         <textarea id="infoText">Clique em um botão para ver as informações.
-As velocidades estão setadas por padrão em 1000Mbps (1Gb), caso seja necessário ajustar, realizar a alteração manualmente no corpo do script
-        </textarea>
+As velocidades estão setadas por padrão em 1000Mbps (1Gb), caso seja necessário ajustar, realizar a alteração manualmente no corpo do script.
+
+
+
+Caso identifique algum problema informar para correção</textarea>
     </div>
 
     <script src="script.js"></script>
