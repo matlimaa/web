@@ -161,17 +161,23 @@ show equipment ont index sn:${serial}
 
 show equipment ont status pon 1/1/${slot}
 
+--------------------
+
 show equipment ont optics 1/1/${slot}/${onu}
 
 show vlan bridge-port-fdb 1/1/${slot}/${onu}/${equip}/1
 
 show dhcp-relay session vlanport:1/1/${slot}/${onu}/${equip}/1:301
 show dhcp-relay session vlanport:1/1/${slot}/${onu}/${equip}/1:299
-show dhcp-relay session vlanport:1/1/${slot}/${onu}/${equip}/1:298
-show dhcp-relay session vlanport:1/1/${slot}/${onu}/vuni:298
 
 show equipment ont status pon 1/1/${slot} ont 1/1/${slot}/${onu}
 
+--------------------
+Comandos telefonia
+
+show dhcp-relay session vlanport:1/1/${slot}/${onu}/vuni:298
+info configure voice ont voice-sip-port 1/1/${slot}/${onu}/6/1
+show voice ont pots operational-data 1/1/${slot}/${onu}/6/1
 
 ####################### PROVISIONAR NOKIA #######################
 
@@ -245,6 +251,8 @@ show equipment ont index sn:${serial}
 show equipment ont status pon 1/1/${slot}
 
 show equipment ont optics 1/1/${slot}/${onu}
+
+--------------------
 
 show vlan bridge-port-fdb 1/1/${slot}/${onu}/${equip}/1
 
@@ -604,3 +612,4 @@ Sem evento massivo
 
     return textos[opcao] || "Clique em um botão para ver as informações.\nAs velocidades estão setadas por padrão em 1000Mbps (1Gb), caso seja necessário ajustar, realizar a alteração manualmente no corpo do script. \n\n\n\nCaso identifique algum problema informar para correção";
 }
+
