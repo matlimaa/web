@@ -14,8 +14,8 @@ function mostrarInfo(opcao) {
     let numero = document.getElementById("numero").value || "558420204039";
     let pin = document.getElementById("pin").value || "541625533630007552";
     let desc = document.getElementById("desc").value || "FGA2210";
-    let service_port = document.getElementById("service_port").value || "Service port/Contrato";
-    let vlan = document.getElementById("vlan").value || "**VLAN**";
+    let service_port = document.getElementById("service_port").value || "Info_2";
+    let vlan = document.getElementById("vlan").value || "Info_1";
 
     let slot = `${slot1}/${slot2}`;
     let slot1Formatado = ajustarNumero(slot1);
@@ -31,12 +31,48 @@ function mostrarInfo(opcao) {
         equip = 3;
     }
 
-    let info = gerarTexto(opcao, slot, onu, serial, slot1, slot2, service_port, vlan, equip, numero, pin, onuFormatado, onu, slot2Formatado, slot1Formatado, desc);
+    let info = gerarTexto(
+        opcao, slot, onu, serial, slot1, slot2, service_port, vlan,
+        equip, numero, pin, onuFormatado, onu, slot2Formatado,
+        slot1Formatado, desc
+    );
 
     document.getElementById("infoText").value = info;
 
     const barra = document.getElementById("barraSuperior");
-    barra.style.display = (opcao === 'datacom' || opcao === 'huawei' || opcao === 'nokiaB'  ) ? "flex" : "none";
+    barra.style.display = (opcao === 'datacom' || opcao === 'huawei' || opcao === 'nokiaB' || opcao === 'zte' || opcao === 'huaweiB' ) ? "flex" : "none";
+
+    // Trocar placeholders de acordo com a opção
+    let vlanInput = document.getElementById("vlan");
+    let servicePortInput = document.getElementById("service_port");
+
+    switch (opcao) {
+        case "datacom":
+            vlanInput.placeholder = "VLAN";
+            servicePortInput.placeholder = "Contrato";
+            break;
+        case "nokiaB":
+            vlanInput.placeholder = "VLAN";
+            servicePortInput.placeholder = "VLAN";
+            break;
+        case "huawei":
+            vlanInput.placeholder = "Service Port";
+            servicePortInput.placeholder = "VLAN";
+            break;
+        case "zte":
+            vlanInput.placeholder = "Username";
+            servicePortInput.placeholder = "Password";
+            break;
+
+        case "huaweiB":
+            vlanInput.placeholder = "Service port";
+            servicePortInput.placeholder = "Service port";
+            break;
+
+        default:
+            vlanInput.placeholder = "VLAN";
+            servicePortInput.placeholder = "Service port/Contrato";
+    }
 
     let buttons = document.querySelectorAll(".sidebar button");
     buttons.forEach(button => button.classList.remove("active"));
@@ -44,6 +80,7 @@ function mostrarInfo(opcao) {
         buttons[opcao - 1].classList.add("active");
     }
 }
+
 
 function atualizarTexto() {
     mostrarInfo(opcaoAtiva);
@@ -55,6 +92,12 @@ function ajustarNumero(numero) {
         return "0" + numero;
     }
     return numero;
+
+
+
+
+
+
 }
 
 function gerarTexto(opcao, slot, onu, serial, slot1, slot2, service_port, vlan, equip, numero, pin, onuFormatado, onuRaw, slot2Formatado, slot1Formatado, desc) {
@@ -113,11 +156,10 @@ config
 
           nokiaR: `####################### COMANDOS NOKIA (R) #######################
 
+
 show equipment ont index sn:${serial}
 
 show equipment ont status pon 1/1/${slot}
-
---------------------
 
 show equipment ont optics 1/1/${slot}/${onu}
 
@@ -125,15 +167,10 @@ show vlan bridge-port-fdb 1/1/${slot}/${onu}/${equip}/1
 
 show dhcp-relay session vlanport:1/1/${slot}/${onu}/${equip}/1:301
 show dhcp-relay session vlanport:1/1/${slot}/${onu}/${equip}/1:299
+show dhcp-relay session vlanport:1/1/${slot}/${onu}/${equip}/1:298
+show dhcp-relay session vlanport:1/1/${slot}/${onu}/vuni:298
 
 show equipment ont status pon 1/1/${slot} ont 1/1/${slot}/${onu}
-
---------------------
-Comandos telefonia
-
-show dhcp-relay session vlanport:1/1/${slot}/${onu}/vuni:298
-info configure voice ont voice-sip-port 1/1/${slot}/${onu}/6/1
-show voice ont pots operational-data 1/1/${slot}/${onu}/6/1
 
 
 ####################### PROVISIONAR NOKIA #######################
@@ -219,7 +256,7 @@ show equipment ont status pon 1/1/${slot} ont 1/1/${slot}/${onu}
 
 #################### PROVISIONAR #####################
 
-configure equipment ont interface 1/1/${slot}/${onu} sernum ${serial} sw-ver-pland disabled optics-hist enable
+configure equipment ont interface 1/1/${slot}/${onu} sernum ZTEG:D872FE4D sw-ver-pland disabled optics-hist enable
 admin-state up
 exit all
 
@@ -369,18 +406,27 @@ Are you sure? [yes] or [no]:   yes
 
                 huawei: `####################### COMANDOS HUAWEI #######################
 
-Consultar service prot
+Consultar service port
 display service-port port 0/${slot} ont ${onu}
 
 consultar ONU desprovisionadas
-display ont autofind all		
+display ont autofind all			
+
+Consultar card/pon
+display ont info 0 ${slot1} ${slot2} all
 
 consultar onde a equipamento está provisionamento
-display ont info by-sn ${serial}	
+display ont info by-sn ${serial}
 
+--------------------------------------------------------------------------
 
+	display ont info by-sn 485754434C098DAA 								
+  		F/S/P: 0/1/22 (Chassi / card [placa] / porta pon)			
+  		ONT-ID: 333	(ID da onu)
 
-####################### DESPROVISIONAR HUAWEI #######################
+--------------------------------------------------------------------------
+
+####################### DESPROVISIONAR #######################
 
 enable  
 
@@ -394,13 +440,6 @@ ont delete ${slot2} ${onu}
 
 quit
 
---------------------------------------------------------------------------
-
-	display ont info by-sn 485754434C098DAA 								
-  		F/S/P: 0/1/22 (Chassi / card [placa] / porta pon)			
-  		ONT-ID: 333	(ID da onu)
-
---------------------------------------------------------------------------
 
 ####################### PROVISIONAMENTO #######################
 
@@ -414,23 +453,116 @@ ont add ${slot2} ${onu} sn-auth ${serial} omci ont-lineprofile-id ${vlan} ont-sr
 
 ont port native-vlan ${slot2} ${onu} eth 1 vlan ${vlan} priority 0
 quit
+
+
+display service-port next-free-index
  
-service-port ${service_port} vlan ${vlan} gpon 0/${slot1}/${slot2} ont ${onu} gemport ${vlan} multi-service user-vlan ${vlan} tag-transform translate
-
---------------------------------
-Cortez
-
-enable
-config
-interface gpon 0/${slot1}
-ont add ${slot2} ${onu} sn-auth ${serial} omci ont-lineprofile-id 1000 ont-srvprofile-id 1000 desc ${serial}
-ont port native-vlan ${slot2} ${onu} eth 1 vlan 10 priority 0
-quit
-service-port vlan 10 gpon 0/${slot1}/${slot2} ont ${onu} gemport 301 multi-service user-vlan 10 inbound traffic-table index 100 outbound traffic-table index 100
-quit
+service-port ${vlan} vlan ${service_port} gpon 0/${slot1}/${slot2} ont ${onu} gemport ${service_port} multi-service user-vlan ${service_port} tag-transform translate
 
 
 `,
+
+huaweiB: `####################### COMANDOS HUAWEI #######################
+
+CONSULTAR SERVICE PORT
+display service-port port 0/${slot} ont ${onu}
+
+CONSULTAR ONU DESPROVISIONADAS
+display ont autofind all			
+
+CONSULTAR CARD/PON
+display ont info 0 ${slot1} ${slot2} all
+
+CONSULTAR INFORMAÇÕES ONU
+display ont info by-sn ${serial}
+
+
+
+####################### PROVISIONAMENTO #######################
+
+config
+interface gpon 0/${slot1} 
+ont add ${slot2} ${onu} sn-auth ${serial} omci ont-lineprofile-id 301 ont-srvprofile-id 301 desc "${serial}"
+ont ipconfig ${slot2} ${onu} ip-index 1 dhcp vlan 301 priority 0
+ont internet-config ${slot1} ${slot2} ip-index 1
+ont wan-config ${slot2} ${onu} ip-index 1 profile-id 0
+ont tr069-server-config ${slot2} ${onu} profile-id 10
+ont port route ${slot2} ${onu} eth 1 enable
+ont port route ${slot2} ${onu} eth 2 enable
+ont port route ${slot2} ${onu} eth 3 enable
+ont port route ${slot2} ${onu} eth 4 enable
+quit
+
+display service-port next-free-index
+
+service-port ${service_port} vlan 301 gpon 0/${slot} ont ${onu} gemport 1 multi-service user-vlan 301 tag-transform translate inbound traffic-table index 50 outbound traffic-table index 50
+
+
+####################### ATIVAÇÃO VOIP #######################
+
+display service-port next-free-index
+
+service-port ${service_port} vlan 201 gpon 0/${slot} ont ${onu} gemport 2 multi-service user-vlan 12 tag-transform translate inbound traffic-table index 50 outbound traffic-table index 50`,
+
+
+                zte: `####################### COMANDOS ZTE #######################
+
+Buscar ONU
+show gpon onu by sn ${serial}
+
+Verifica se pegou IP
+show gpon remote-onu wan-ip gpon_onu-1/${slot}:${onu}
+
+Verificar sinal da fibra
+show pon power attenuation gpon_onu-1/${slot}:${onu}
+
+Validar status da ONU
+show gpon onu detail-info gpon_onu-1/${slot}:${onu}
+
+Desprovisionadas 
+show pon onu uncfg
+
+Listar ONUs
+show gpon onu baseinfo gpon_olt-1/${slot}
+
+Listar Status da ONUs 
+show gpon onu state gpon_olt-1/${slot}
+
+
+####################### PROVISONAMENTO ZTE #######################
+
+enable
+senha: zxr10
+
+configure terminal
+interface gpon_olt-1/${slot}
+no shutdown
+onu ${onu} type OTP-GPON sn ${serial}
+bind-onu ${onu} profile line LP-HSI_TV_PH_PPPoE_GPON		
+bind-onu ${onu} profile service SP-HSI_TV_PH_PPPoE_GPON		
+exit
+interface vport-1/${slot}.${onu}:1
+service-port 1 user-vlan 401 vlan 401 ingress vel_2000M_2000M_IN egress vel_2000M_2000M_OUT		
+exit
+pon-onu-mng gpon_onu-1/${slot}:${onu}
+mvlan tag eth_0/1 strip
+mvlan tag eth_0/2 strip
+mvlan tag eth_0/3 strip
+mvlan tag eth_0/4 strip
+wan-ip ipv4 mode pppoe username ${vlan} password ${service_port} VP-PPPoE host 1
+
+
+####################### DESPROVISIONAR #######################
+
+enable
+configure terminal
+interface gpon_olt-1/${slot}
+no onu ${slot}
+exit
+
+`,
+
+		
 
                 0: `####################### CHAMADO GSOP #######################
 
@@ -470,7 +602,5 @@ Sem evento massivo
 
     };
 
-    return textos[opcao] || "Selecione uma opção.";
+    return textos[opcao] || "Clique em um botão para ver as informações.\nAs velocidades estão setadas por padrão em 1000Mbps (1Gb), caso seja necessário ajustar, realizar a alteração manualmente no corpo do script. \n\n\n\nCaso identifique algum problema informar para correção";
 }
-
-
