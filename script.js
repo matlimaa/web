@@ -457,9 +457,9 @@ config
 
 interface gpon 0/${slot1}
 
-ont add ${slot2} ${onu} sn-auth ${serial} omci ont-lineprofile-id ${vlan} ont-srvprofile-id ${vlan} desc ${serial}
+ont add ${slot2} ${onu} sn-auth ${serial} omci ont-lineprofile-id ${service_port} ont-srvprofile-id ${service_port} desc ${serial}
 
-ont port native-vlan ${slot2} ${onu} eth 1 vlan ${vlan} priority 0
+ont port native-vlan ${slot2} ${onu} eth 1 vlan ${service_port} priority 0
 quit
 
 
@@ -612,4 +612,5 @@ Sem evento massivo
 
     return textos[opcao] || "Clique em um botão para ver as informações.\nAs velocidades estão setadas por padrão em 1000Mbps (1Gb), caso seja necessário ajustar, realizar a alteração manualmente no corpo do script. \n\n\n\nCaso identifique algum problema informar para correção";
 }
+
 
