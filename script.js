@@ -585,6 +585,8 @@ Cidade: MOGI MIRIM/SP
 
 Serial equipamento: ALCLB3EA3E76
 
+Caminho de rede:
+
 Tecnologia: Fibra FTTH
 
 Problema apresentado: Equipamento não sobe conexão IP
@@ -613,6 +615,7 @@ Sem evento massivo
 
     return textos[opcao] || "Clique em um botão para ver as informações.\nAs velocidades estão setadas por padrão em 1000Mbps (1Gb), caso seja necessário ajustar, realizar a alteração manualmente no corpo do script. \n\n\n\nCaso identifique algum problema informar para correção";
 }
+
 
 
 
