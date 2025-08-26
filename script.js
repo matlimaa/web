@@ -418,7 +418,7 @@ Consultar service port
 display service-port port 0/${slot} ont ${onu}
 
 consultar ONU desprovisionadas
-display ont autofind all			
+display ont autofind all
 
 Consultar card/pon
 display ont info 0 ${slot1} ${slot2} all
@@ -436,9 +436,9 @@ display ont info by-sn ${serial}
 
 ####################### DESPROVISIONAR #######################
 
-enable  
+enable
 
-config 
+config
 
 undo service-port port 0/${slot} ont ${onu}
 
@@ -476,7 +476,7 @@ CONSULTAR SERVICE PORT
 display service-port port 0/${slot} ont ${onu}
 
 CONSULTAR ONU DESPROVISIONADAS
-display ont autofind all			
+display ont autofind all
 
 CONSULTAR CARD/PON
 display ont info 0 ${slot1} ${slot2} all
@@ -489,7 +489,7 @@ display ont info by-sn ${serial}
 ####################### PROVISIONAMENTO #######################
 
 config
-interface gpon 0/${slot1} 
+interface gpon 0/${slot1}
 ont add ${slot2} ${onu} sn-auth ${serial} omci ont-lineprofile-id 301 ont-srvprofile-id 301 desc "${serial}"
 ont ipconfig ${slot2} ${onu} ip-index 1 dhcp vlan 301 priority 0
 ont internet-config ${slot1} ${slot2} ip-index 1
@@ -527,7 +527,7 @@ show pon power attenuation gpon_onu-1/${slot}:${onu}
 Validar status da ONU
 show gpon onu detail-info gpon_onu-1/${slot}:${onu}
 
-Desprovisionadas 
+Desprovisionadas
 show pon onu uncfg
 
 Listar ONUs
@@ -546,11 +546,11 @@ configure terminal
 interface gpon_olt-1/${slot}
 no shutdown
 onu ${onu} type OTP-GPON sn ${serial}
-bind-onu ${onu} profile line LP-HSI_TV_PH_PPPoE_GPON		
-bind-onu ${onu} profile service SP-HSI_TV_PH_PPPoE_GPON		
+bind-onu ${onu} profile line LP-HSI_TV_PH_PPPoE_GPON
+bind-onu ${onu} profile service SP-HSI_TV_PH_PPPoE_GPON
 exit
 interface vport-1/${slot}.${onu}:1
-service-port 1 user-vlan 401 vlan 401 ingress vel_2000M_2000M_IN egress vel_2000M_2000M_OUT		
+service-port 1 user-vlan 401 vlan 401 ingress vel_2000M_2000M_IN egress vel_2000M_2000M_OUT
 exit
 pon-onu-mng gpon_onu-1/${slot}:${onu}
 mvlan tag eth_0/1 strip
@@ -612,6 +612,7 @@ Sem evento massivo
 
     return textos[opcao] || "Clique em um botão para ver as informações.\nAs velocidades estão setadas por padrão em 1000Mbps (1Gb), caso seja necessário ajustar, realizar a alteração manualmente no corpo do script. \n\n\n\nCaso identifique algum problema informar para correção";
 }
+
 
 
 
