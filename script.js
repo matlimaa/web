@@ -565,7 +565,7 @@ wan-ip ipv4 mode pppoe username ${vlan} password ${service_port} vlan-profile VP
 enable
 configure terminal
 interface gpon_olt-1/${slot}
-no onu ${slot}
+no onu ${onu}
 exit
 
 `,
@@ -612,6 +612,7 @@ Sem evento massivo
 
     return textos[opcao] || "Clique em um botão para ver as informações.\nAs velocidades estão setadas por padrão em 1000Mbps (1Gb), caso seja necessário ajustar, realizar a alteração manualmente no corpo do script. \n\n\n\nCaso identifique algum problema informar para correção";
 }
+
 
 
 
