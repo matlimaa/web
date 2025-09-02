@@ -265,7 +265,7 @@ show equipment ont status pon 1/1/${slot} ont 1/1/${slot}/${onu}
 
 #################### PROVISIONAR #####################
 
-configure equipment ont interface 1/1/${slot}/${onu} sernum ZTEG:D872FE4D sw-ver-pland disabled optics-hist enable
+configure equipment ont interface 1/1/${slot}/${onu} sernum ${serial} sw-ver-pland disabled optics-hist enable
 admin-state up
 exit all
 
@@ -615,6 +615,7 @@ Sem evento massivo
 
     return textos[opcao] || "Clique em um botão para ver as informações.\nAs velocidades estão setadas por padrão em 1000Mbps (1Gb), caso seja necessário ajustar, realizar a alteração manualmente no corpo do script. \n\n\n\nCaso identifique algum problema informar para correção";
 }
+
 
 
 
