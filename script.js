@@ -382,7 +382,10 @@ bridge show 1-${slot1}-${slot2}-${onu}
 Buscar ONU pelo serial
 onu find fsan ${serial}
 
+Realizar Recover
 onu recover 1-${slot1}-${slot2}-${onu}
+
+Realizar Reset
 onu reboot 1-${slot1}-${slot2}-${onu}
 ####################### COMANDO PARA CRIAR VLAN 301 ZHONE #######################
 
@@ -617,6 +620,7 @@ Sem evento massivo
 
     return textos[opcao] || "Clique em um botão para ver as informações.\nAs velocidades estão setadas por padrão em 1000Mbps (1Gb), caso seja necessário ajustar, realizar a alteração manualmente no corpo do script. \n\n\n\nCaso identifique algum problema informar para correção";
 }
+
 
 
 
