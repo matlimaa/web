@@ -173,6 +173,8 @@ show dhcp-relay session vlanport:1/1/${slot}/${onu}/${equip}/1:299
 
 show equipment ont status pon 1/1/${slot} ont 1/1/${slot}/${onu}
 
+show equipment ont cfg-download 1/1/${slot}/${onu}
+
 --------------------
 Comandos telefonia
 
@@ -621,6 +623,7 @@ Sem evento massivo
 
     return textos[opcao] || "Clique em um botão para ver as informações.\nAs velocidades estão setadas por padrão em 1000Mbps (1Gb), caso seja necessário ajustar, realizar a alteração manualmente no corpo do script. \n\n\n\nCaso identifique algum problema informar para correção";
 }
+
 
 
 
