@@ -227,7 +227,7 @@ configure igmp channel vlan:1/1/${slot}/${onu}/${equip}/1:299 max-num-group 10
   ⚠️⚠️⚠️ CASO ERRO, TENTAR ENVIAR LINHA POR LINHA ⚠️⚠️⚠️ 
 
 configure qos interface 1/1/${slot}/${onu}/voip upstream-queue 2 bandwidth-profile name:vel_1M_1M_IN
-configure equipment ont slot 1/1/${slot}/${onu}/6 plndnumdataports 0 plndnumvoiceports 1 planned-card-type pots admin-state down
+configure equipment ont slot 1/1/${slot}/${onu}/4 plndnumdataports 0 plndnumvoiceports 1 planned-card-type pots admin-state down
 configure bridge port 1/1/${slot}/${onu}/vuni max-unicast-mac 4
 configure bridge port 1/1/${slot}/${onu}/vuni vlan-id 298
 configure bridge port 1/1/${slot}/${onu}/vuni pvid 298
@@ -236,11 +236,11 @@ configure iphost ont ont:1/1/${slot}/${onu}/1 admin-state up
 configure voice ont voip-config ont:1/1/${slot}/${onu}/1 protocol sip
 configure voice ont sip-config ont:1/1/${slot}/${onu}/1 proxyserv-prof 2 aor-host-prt-prof 3 registrar-prof 2 reg-expire-time 1800 uri-format sip-uri
 configure interface port voip:1/1/${slot}/${onu} admin-up
-configure equipment ont slot 1/1/${slot}/${onu}/2 admin-state up
-configure voice ont voice-port 1/1/${slot}/${onu}/2/1 admin-state locked
-configure voice ont voice-port 1/1/${slot}/${onu}/2/1 custinfo POTS1 voipconfig sip pots-pwr-timer 300 rx-gain 1.000000 tx-gain 2.000000 impedance 600 voip-media-prof 1
-configure voice ont voice-sip-port 1/1/${slot}/${onu}/2/1 user-aor ${numero} display-name ${numero} user-name ${numero} password plain:${pin} voice-mail-prof 2 ntwk-dp-prof 1 app-serv-prof 1 ac-code-prof 1
-configure voice ont voice-port 1/1/${slot}/${onu}/2/1 admin-state unlocked
+configure equipment ont slot 1/1/${slot}/${onu}/4 admin-state up
+configure voice ont voice-port 1/1/${slot}/${onu}/4/1 admin-state locked
+configure voice ont voice-port 1/1/${slot}/${onu}/4/1 custinfo POTS1 voipconfig sip pots-pwr-timer 300 rx-gain 1.000000 tx-gain 2.000000 impedance 600 voip-media-prof 1
+configure voice ont voice-sip-port 1/1/${slot}/${onu}/4/1 user-aor ${numero} display-name ${numero} user-name ${numero} password plain:${pin} voice-mail-prof 2 ntwk-dp-prof 1 app-serv-prof 1 ac-code-prof 1
+configure voice ont voice-port 1/1/${slot}/${onu}/4/1 admin-state unlocked
 
 
 
@@ -623,6 +623,7 @@ Sem evento massivo
 
     return textos[opcao] || "Clique em um botão para ver as informações.\nAs velocidades estão setadas por padrão em 1000Mbps (1Gb), caso seja necessário ajustar, realizar a alteração manualmente no corpo do script. \n\n\n\nCaso identifique algum problema informar para correção";
 }
+
 
 
 
